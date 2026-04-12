@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoramento RSI - José Alves Barbosa</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        :root {
+            --primary: #10231D; /* Verde Escuro da Imagem 2 */
+            --secondary: #16A869; /* Verde Vibrante */
+            --accent: #BFFCB1; /* Verde Muito Claro/Glow */
+            --bg: #F0F4F2;
+            --text-dark: #2c3e50;
+        }
+
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--text-dark); margin: 0; padding: 0; }
+        
+        /* Cabeçalho com Degradê Estilo Imagem 2 */
+        .header-gradient {
+            background: linear-gradient(135deg, #0A1C16 0%, #164835 100%);
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 3px solid var(--secondary);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            color: #fff;
+        }
+
+        .therapist-name { font-size: 1.2em; text-transform: uppercase; color: var(--accent); letter-spacing: 2px; margin-bottom: 5px; font-weight: bold; }
+        .methodology-title { font-size: 2.2em; margin: 5px 0; font-weight: 800; }
+        .assessment-subtitle { font-size: 1.1em; color: rgba(255,255,255,0.8); }
+
+        .container { max-width: 800px; margin: 30px auto; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); }
+        
+        .info-paciente { margin-bottom: 25px; display: grid; grid-template-columns: 2fr 1fr; gap: 15px; }
+        input { padding: 12px; border: 1px solid #c9d8d1; border-radius: 8px; font-size: 1em; background-color: #fbfdfc; }
+        input:focus { border-color: var(--secondary); outline: none; box-shadow: 0 0 5px rgba(22, 168, 105, 0.3); }
+
+        .scales-info { font-size: 0.9em; color: #666; margin-bottom: 25px; padding: 10px; background-color: #f6fdf9; border-radius: 5px; border-left: 3px solid #ddd; }
+
+        .pilar { margin-bottom: 30px; border-left: 5px solid var(--secondary); padding-left: 20px; background-color: #fafdfc; padding-top: 15px; padding-bottom: 15px; border-radius: 0 8px 8px 0; }
+        .pilar h3 { color: var(--primary); margin-top: 0; }
+
+        .pergunta { margin: 15px 0; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e8f0eb; padding-bottom: 15px; }
+        .pergunta:last-child { border-bottom: none; }
+        .pergunta span { flex-grow: 1; padding-right: 15px; color: #333; }
+        
+        select { padding: 10px; border-radius: 8px; border: 1px solid #c9d8d1; width: 70px; text-align: center; font-size: 1em; background-color: white; color: var(--text-dark); appearance: none; -webkit-appearance: none; cursor: pointer; }
+        select:focus { border-color: var(--secondary); outline: none; }
+
+        .resultado-box { margin-top: 35px; padding: 25px; border-radius: 12px; text-align: center; display: none; box-shadow: 0 0 15px rgba(0,0,0,0.1); }
+        .resultado-box h3 { margin-top: 0; font-size: 1.6em; }
+        .resultado-box h4 { font-size: 1.3em; font-weight: bold; margin-bottom: 10px; }
+        .resultado-box p { font-size: 1.1em; color: #555; }
+
+        .btn-container { display: flex; gap: 15px; justify-content: center; margin-top: 30px; }
+        button { padding: 15px 30px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1em; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; box-shadow: 0 3px 6px rgba(0,0,0,0.1); }
+        .btn-calc { background-color: var(--secondary); color: white; }
+        .btn-calc:hover { background-color: #128755; transform: translateY(-2px); }
+        .btn-pdf { background-color: #34495e; color: white; }
+        .btn-pdf:hover { background-color: #2c3e50; transform: translateY(-2px); }
+
+        @media print { 
+            .no-print { display: none; } 
+            body { background: white; color: black; }
+            .container { box-shadow: none; margin: 0; max-width: 100%; padding: 20px; }
+            .header-gradient { padding: 20px; border-bottom: 2px solid black; }
+            input, select { border: 1px solid #ccc; -webkit-appearance: menulist; appearance: menulist; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header-gradient" id="header">
+    <div class="therapist-name">Terapeuta: José Alves Barbosa</div>
+    <div class="methodology-title">Metodologia RSI</div>
+    <div class="assessment-subtitle">Monitoramento de Mapeamento de Cargas (MMC)</div>
+</div>
+
+<div class="container" id="conteudo">
+    
+    <div class="info-paciente">
+        <input type="text" id="nome" placeholder="Nome Completo do Interagente (Paciente)">
+        <input type="date" id="data">
+    </div>
+
+    <div class="scales-info">
+        Por favor, responda com atenção. Para cada item abaixo, escolha um nível de 0 a 4:<br>
+        <strong>0: Ausente</strong> (Não sinto nada) | <strong>1: Leve</strong> | <strong>2: Moderado</strong> | <strong>3: Intenso</strong> | <strong>4: Crítico</strong> (Muito forte ou constante)
+    </div>
+
+    <div class="pilar">
+        <h3>Dimensão A: Carga Orgânica (Terreno Biológico)</h3>
+        <div class="pergunta"><span>Marcador Gastresofágico (Azia, queimação, estufamento, má digestão, disbiose)</span>
+            <select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
+        </div>
+        <div class="pergunta"><span>Marcador de Toxicidade (Dores de cabeça frequentes, cansaço extremo, paladar metálico, língua branca)</span>
+            <select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
+        </div>
+        <div class="pergunta"><span>Marcador Inflamatório (Dores articulares inexplicáveis, inchaço pelo corpo, retenção de líquidos)</span>
+            <select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
+        </div>
+    </div>
+
+    <div class="pilar">
+        <h3>Dimensão B: Carga Neural (Sistema Nervoso)</h3>
+        <div class="pergunta"><span>Hipervigilância (Sentir-se 'elétrico', sustos fáceis, irritabilidade com ruídos, falta de foco)</span>
+            <select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
+        </div>
+        <div class="pergunta"><span>Rigidez Somática (Tensão crônica no pescoço/trapézio, bruxismo, ranger de dentes, mandíbula travada)</span>
+            <select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
+        </div>
+        <div class="pergunta"><span>Latência de Recuperação (Demorar muito tempo para se acalmar ou relaxar após um momento de estresse leve)</span>
+            <select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
+        </div>
+    </div>
+
+    <div class="pilar">
+        <h3>Dimensão C: Carga Psicotraumática (Escopo TRG)</h3>
+        <div class="pergunta"><span>Flashbacks Somáticos (Ao lembrar de algo ruim, sente um aperto no peito, frio na barriga, ou falta de ar real)</span>
+            <select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
+        </div>
+        <div class="pergunta"><span>Congelamento Emocional (Sentir-se 'travado', sem rumo, ou uma indiferença/anestesia profunda diante da vida)</span>
+            <select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
+        </div>
+        <div class="pergunta"><span>Recorrência de Padrão (Sensação constante de estar repetindo os mesmos erros ou caindo nos mesmos ciclos de sofrimento)</span>
+            <select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
+        </div>
+    </div>
+
+    <div class="btn-container no-print">
+        <button class="btn-calc" onclick="calcular()">Analisar Saturação</button>
+        <button class="btn-pdf" onclick="gerarPDF()">Baixar Relatório (PDF)</button>
+    </div>
+
+    <div id="resultado" class="resultado-box">
+        <h3>Pontuação Total: <span id="pontos-total">0</span></h3>
+        <h4 id="status-txt"></h4>
+        <p id="orientacao-txt"></p>
+    </div>
+</div>
+
+<script>
+    function calcular() {
+        let scores = document.querySelectorAll('.score');
+        let total = 0;
+        scores.forEach(s => total += parseInt(s.value));
+        
+        document.getElementById('pontos-total').innerText = total;
+        let status = "";
+        let orientacao = "";
+        let cor = "";
+        let corFundo = "";
+
+        if(total <= 12) {
+            status = "Nível 1: Equilíbrio Dinâmico";
+            orientacao = "Seu organismo apresenta boa resiliência. O terreno biológico está favorável, permitindo um foco direto no reprocessamento emocional avançado com a TRG.";
+            cor = "#27ae60"; /* Verde Sucesso */
+            corFundo = "#eafdf3";
+        } else if(total <= 24) {
+            status = "Nível 2: Saturação Latente";
+            orientacao = "Alerta: Seu corpo começa a acumular toxinas e inflamação. Isso pode gerar 'nevoeiro mental'. É recomendada uma hidratação estratégica e ajustes alimentares leves para facilitar os ganhos terapêuticos.";
+            cor = "#f39c12"; /* Laranja Alerta */
+            corFundo = "#fef9e7";
+        } else if(total <= 36) {
+            status = "Nível 3: Sobrecarga Crítica";
+            orientacao = "Atenção Alta: Seu corpo está inflamado e lutando. Isso drena sua energia mental. O reprocessamento de traumas pode ser mais desafiador. Foco paralelo em protocolos de desinflamação é essencial.";
+            cor = "#e67e22"; /* Laranja Forte */
+            corFundo = "#fdf2e9";
+        } else {
+            status = "Nível 4: Colapso Sistêmico";
+            orientacao = "Urgência Biológica: Seu organismo está saturado. O nível de inflamação e toxicidade está impedindo seu cérebro de processar emoções de forma saudável. Prioridade total na 'limpeza do terreno' e desinflamação antes de abordar traumas muito profundos.";
+            cor = "#c0392b"; /* Vermelho Perigo */
+            corFundo = "#fdeaea";
+        }
+
+        const resultBox = document.getElementById('resultado');
+        document.getElementById('status-txt').innerText = status;
+        document.getElementById('status-txt').style.color = cor;
+        document.getElementById('orientacao-txt').innerText = orientacao;
+        
+        resultBox.style.backgroundColor = corFundo;
+        resultBox.style.border = `2px solid ${cor}`;
+        resultBox.style.display = "block";
+
+        // Scroll suave até o resultado
+        resultBox.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function gerarPDF() {
+        const fullContent = document.body; // Captura a página inteira, incluindo o novo cabeçalho
+        const nome = document.getElementById('nome').value || 'Paciente_Sem_Nome';
+        const dataInput = document.getElementById('data').value;
+        const dataFormatada = dataInput ? dataInput.split('-').reverse().join('_') : 'Sem_Data';
+        
+        const options = {
+            margin: 10,
+            filename: `MMC_RSI_${nome}_${dataFormatada}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+        
+        // Garante que o resultado esteja visível no PDF
+        document.getElementById('resultado').style.display = "block";
+        
+        html2pdf().set(options).from(fullContent).save().then(() => {
+            // Opcional: Ocultar o resultado novamente após gerar o PDF
+            // document.getElementById('resultado').style.display = "none";
+        });
+    }
+</script>
+
+</body>
+</html>

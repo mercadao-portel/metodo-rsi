@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monitoramento RSI - José Alves Barbosa</title>
+    <title>Metodologia RSI - José Alves Barbosa</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
@@ -11,11 +11,15 @@
             --secondary: #16A869;
             --accent: #BFFCB1;
             --bg: #F0F4F2;
-            --text-dark: #2c3e50;
         }
 
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text-dark); margin: 0; padding: 0; }
+        /* Reset para evitar espaços fantasmas */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); color: #2c3e50; }
+        
+        #app-content { background: white; width: 100%; max-width: 800px; margin: 0 auto; }
+
         .header-gradient {
             background: linear-gradient(135deg, #0A1C16 0%, #164835 100%);
             padding: 25px 20px;
@@ -27,36 +31,37 @@
         .therapist-name { font-size: 1em; text-transform: uppercase; color: var(--accent); letter-spacing: 2px; font-weight: bold; }
         .methodology-title { font-size: 1.8em; margin: 5px 0; font-weight: 800; }
 
-        .container { 
-            max-width: 800px; margin: 0 auto; background: white; padding: 25px; 
-            position: relative; overflow: visible;
-        }
+        .container { padding: 20px; }
         
-        .info-paciente { display: grid; grid-template-columns: 2fr 1fr; gap: 15px; margin-bottom: 20px; }
-        input { padding: 10px; border: 1px solid #c9d8d1; border-radius: 8px; font-size: 0.95em; background: #fbfdfc; }
+        .info-paciente { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-bottom: 15px; }
+        input { padding: 10px; border: 1px solid #c9d8d1; border-radius: 6px; font-size: 14px; width: 100%; }
 
-        .scales-info { font-size: 0.85em; color: #555; margin-bottom: 20px; padding: 10px; background: #f6fdf9; border-radius: 8px; border-left: 4px solid var(--secondary); }
+        .scales-info { font-size: 12px; color: #555; margin-bottom: 15px; padding: 10px; background: #f6fdf9; border-radius: 6px; border-left: 4px solid var(--secondary); }
 
         .pilar { 
-            margin-bottom: 20px; border-left: 5px solid var(--secondary); padding-left: 15px; 
-            background: #fafdfc; padding-top: 5px; padding-bottom: 5px; border-radius: 0 8px 8px 0;
+            margin-bottom: 15px; border-left: 4px solid var(--secondary); padding-left: 12px; 
+            background: #fafdfc; padding-top: 5px; padding-bottom: 5px; border-radius: 0 6px 6px 0;
             page-break-inside: avoid;
         }
 
-        .pergunta { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eef5f1; padding: 8px 0; }
-        .pergunta span { flex-grow: 1; padding-right: 10px; font-size: 0.9em; }
-        select { padding: 5px; border-radius: 5px; border: 1px solid #c9d8d1; width: 55px; }
+        h3 { font-size: 16px; margin-bottom: 8px; color: var(--primary); }
 
-        .resultado-box { margin-top: 20px; padding: 20px; border-radius: 10px; text-align: center; display: none; page-break-inside: avoid; }
+        .pergunta { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eef5f1; padding: 6px 0; }
+        .pergunta span { flex-grow: 1; padding-right: 10px; font-size: 13px; }
+        select { padding: 4px; border-radius: 4px; border: 1px solid #c9d8d1; width: 50px; font-size: 13px; }
+
+        .resultado-box { margin-top: 15px; padding: 15px; border-radius: 8px; text-align: center; display: none; page-break-inside: avoid; }
+        
         .btn-container { display: flex; gap: 10px; justify-content: center; padding: 20px; background: var(--bg); }
-        button { padding: 12px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; text-transform: uppercase; }
+        button { padding: 12px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; text-transform: uppercase; font-size: 13px; }
         .btn-calc { background: var(--secondary); color: white; }
         .btn-pdf { background: #34495e; color: white; }
 
+        /* Ajustes de Impressão */
         @media print {
-            #app-content { width: 100% !important; position: absolute; top: 0; }
+            body { background: white; }
             .no-print { display: none !important; }
-            .container { box-shadow: none !important; padding: 10px 20px !important; }
+            #app-content { margin: 0; padding: 0; width: 100%; border: none; }
         }
     </style>
 </head>
@@ -66,7 +71,7 @@
     <div class="header-gradient">
         <div class="therapist-name">José Alves Barbosa</div>
         <div class="methodology-title">Metodologia RSI</div>
-        <div style="font-size: 0.9em; opacity: 0.8;">Mapeamento de Carga Alostática e Terreno Biológico</div>
+        <div style="font-size: 0.85em; opacity: 0.9;">Mapeamento de Carga Alostática e Terreno Biológico</div>
     </div>
 
     <div class="container">
@@ -80,13 +85,13 @@
         <div class="pilar">
             <h3>Dimensão A: Carga Orgânica</h3>
             <div class="pergunta"><span>Marcador Gastresofágico (Azia, disbiose, distensão)</span><select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
-            <div class="pergunta"><span>Marcador de Toxicidade (Dores de cabeça, cansaço, língua branca)</span><select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
+            <div class="pergunta"><span>Marcador de Toxicidade (Cansaço, língua branca, cefaleia)</span><select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
             <div class="pergunta"><span>Marcador Inflamatório (Dores articulares, retenção hídrica)</span><select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
         </div>
 
         <div class="pilar">
             <h3>Dimensão B: Carga Neural</h3>
-            <div class="pergunta"><span>Hipervigilância (Sustos, falta de foco, irritabilidade sonora)</span><select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
+            <div class="pergunta"><span>Hipervigilância (Sustos, falta de foco, irritabilidade)</span><select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
             <div class="pergunta"><span>Rigidez Somática (Tensão trapézio/mandíbula, bruxismo)</span><select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
             <div class="pergunta"><span>Latência de Recuperação (Demora para relaxar pós-estresse)</span><select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
         </div>
@@ -100,8 +105,8 @@
 
         <div id="resultado" class="resultado-box">
             <h3 style="margin:0">Saturação Sistêmica: <span id="pontos-total">0</span> pontos</h3>
-            <h4 id="status-txt" style="margin:10px 0; text-transform: uppercase;"></h4>
-            <p id="orientacao-txt" style="margin:0; line-height: 1.4; font-weight: 500;"></p>
+            <h4 id="status-txt" style="margin:8px 0; text-transform: uppercase; font-size: 14px;"></h4>
+            <p id="orientacao-txt" style="margin:0; line-height: 1.3; font-size: 13px; font-weight: 500;"></p>
         </div>
     </div>
 </div>
@@ -121,19 +126,19 @@
 
         if(total <= 12) {
             status = "Nível 1: Equilíbrio Sistêmico";
-            orientacao = "ALERTA DE MANUTENÇÃO: Seu terreno biológico está estável. Para preservar este estado, mantenha atenção rigorosa à hidratação, alimentação limpa e exercícios leves porém frequentes. O equilíbrio requer vigilância constante.";
+            orientacao = "ALERTA DE MANUTENÇÃO: Terreno estável. Mantenha atenção à hidratação, alimentação limpa e exercícios leves frequentes para preservar este estado.";
             cor = "#27ae60"; bg = "#eafdf3";
         } else if(total <= 24) {
             status = "Nível 2: Saturação Latente";
-            orientacao = "ALERTA DE REPARAÇÃO: Seu organismo apresenta sinais de acúmulo tóxico. Siga rigorosamente as recomendações de desinflamação do seu terapeuta para que sua saúde sistêmica seja restaurada antes que o quadro evolua.";
+            orientacao = "ALERTA DE REPARAÇÃO: Sinais de acúmulo tóxico detectados. Siga rigorosamente as orientações de restauração do seu terapeuta para recuperar a vitalidade.";
             cor = "#f39c12"; bg = "#fef9e7";
         } else if(total <= 36) {
             status = "Nível 3: Sobrecarga Crítica";
-            orientacao = "ALERTA SÉRIO: Alto índice de inflamação detectado. Seu corpo está operando sob estresse biológico severo, o que drena sua capacidade de recuperação. É urgente priorizar a limpeza orgânica e seguir o protocolo clínico estabelecido.";
+            orientacao = "ALERTA SÉRIO: Alto índice de inflamação. O organismo opera sob estresse severo. É urgente priorizar a limpeza orgânica e o protocolo clínico estabelecido.";
             cor = "#e67e22"; bg = "#fdf2e9";
         } else {
             status = "Nível 4: Colapso Biológico";
-            orientacao = "ALERTA DE EMERGÊNCIA: Saturação máxima do terreno biológico. O sistema está incapacitado de processar novas cargas. Intervenção imediata na desintoxicação e repouso metabólico são cruciais.";
+            orientacao = "ALERTA DE EMERGÊNCIA: Saturação máxima. O sistema está incapaz de processar novas cargas. Intervenção imediata na desintoxicação é crucial.";
             cor = "#c0392b"; bg = "#fdeaea";
         }
 
@@ -144,21 +149,32 @@
         document.getElementById('status-txt').innerText = status;
         document.getElementById('status-txt').style.color = cor;
         document.getElementById('orientacao-txt').innerText = orientacao;
-        res.scrollIntoView({ behavior: 'smooth' });
     }
 
     function gerarPDF() {
         const elemento = document.getElementById('app-content');
         const nome = (document.getElementById('nome').value || 'Interagente').replace(/\s+/g, '_');
+        
+        // Configurações para forçar o PDF a ignorar margens do browser
         const opt = {
             margin: 0,
             filename: `RSI_${nome}.pdf`,
             image: { type: 'jpeg', quality: 1 },
-            html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-            pagebreak: { mode: ['avoid-all'] }
+            html2canvas: { 
+                scale: 2, 
+                useCORS: true, 
+                scrollY: 0, // Resolve o problema da página branca no topo
+                scrollX: 0,
+                windowWidth: 800 // Trava a largura para não distorcer
+            },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
-        html2pdf().set(opt).from(elemento).save();
+
+        // Força o scroll para o topo antes de gerar para garantir posição correta
+        window.scrollTo(0,0);
+        setTimeout(() => {
+            html2pdf().set(opt).from(elemento).save();
+        }, 100);
     }
 </script>
 </body>

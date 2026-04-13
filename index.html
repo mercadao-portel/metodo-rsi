@@ -14,230 +14,126 @@
             --text-dark: #2c3e50;
         }
 
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background: var(--bg); 
-            color: var(--text-dark); 
-            margin: 0; 
-            padding: 0; 
-        }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text-dark); margin: 0; padding: 0; }
         
-        /* Cabeçalho Profissional com Degradê */
         .header-gradient {
             background: linear-gradient(135deg, #0A1C16 0%, #164835 100%);
-            padding: 30px 20px;
+            padding: 25px 20px;
             text-align: center;
             border-bottom: 4px solid var(--secondary);
             color: #fff;
         }
 
-        .therapist-name { 
-            font-size: 1.1em; 
-            text-transform: uppercase; 
-            color: var(--accent); 
-            letter-spacing: 2px; 
-            margin-bottom: 5px; 
-            font-weight: bold; 
-        }
-        .methodology-title { font-size: 2em; margin: 5px 0; font-weight: 800; }
-        .assessment-subtitle { font-size: 1em; color: rgba(255,255,255,0.8); }
+        .therapist-name { font-size: 1em; text-transform: uppercase; color: var(--accent); letter-spacing: 2px; font-weight: bold; }
+        .methodology-title { font-size: 1.8em; margin: 5px 0; font-weight: 800; }
 
         .container { 
-            max-width: 800px; 
-            margin: 20px auto; 
-            background: white; 
-            padding: 30px; 
-            border-radius: 12px; 
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            max-width: 800px; margin: 0 auto; background: white; padding: 25px; 
+            position: relative; overflow: visible;
         }
         
-        .info-paciente { 
-            display: grid; 
-            grid-template-columns: 2fr 1fr; 
-            gap: 15px; 
-            margin-bottom: 20px;
-        }
-        
-        input { 
-            padding: 12px; 
-            border: 1px solid #c9d8d1; 
-            border-radius: 8px; 
-            font-size: 1em; 
-            background-color: #fbfdfc; 
-        }
+        .info-paciente { display: grid; grid-template-columns: 2fr 1fr; gap: 15px; margin-bottom: 20px; }
+        input { padding: 10px; border: 1px solid #c9d8d1; border-radius: 8px; font-size: 0.95em; background: #fbfdfc; }
 
-        .scales-info { 
-            font-size: 0.85em; 
-            color: #555; 
-            margin-bottom: 20px; 
-            padding: 12px; 
-            background-color: #f6fdf9; 
-            border-radius: 8px; 
-            border-left: 4px solid var(--secondary); 
-        }
+        .scales-info { font-size: 0.85em; color: #555; margin-bottom: 20px; padding: 10px; background: #f6fdf9; border-radius: 8px; border-left: 4px solid var(--secondary); }
 
         .pilar { 
-            margin-bottom: 25px; 
-            border-left: 5px solid var(--secondary); 
-            padding-left: 15px; 
-            background-color: #fafdfc; 
-            padding-top: 10px; 
-            padding-bottom: 10px; 
-            border-radius: 0 8px 8px 0; 
+            margin-bottom: 20px; border-left: 5px solid var(--secondary); padding-left: 15px; 
+            background: #fafdfc; padding-top: 5px; padding-bottom: 5px; border-radius: 0 8px 8px 0;
+            page-break-inside: avoid;
         }
 
-        .pergunta { 
-            margin: 12px 0; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            border-bottom: 1px solid #eef5f1; 
-            padding-bottom: 10px; 
-        }
-        
-        .pergunta span { flex-grow: 1; padding-right: 10px; font-size: 0.95em; }
-        
-        select { 
-            padding: 8px; 
-            border-radius: 6px; 
-            border: 1px solid #c9d8d1; 
-            width: 60px; 
-            background: white; 
-            cursor: pointer;
-        }
+        .pergunta { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eef5f1; padding: 8px 0; }
+        .pergunta span { flex-grow: 1; padding-right: 10px; font-size: 0.9em; }
+        select { padding: 5px; border-radius: 5px; border: 1px solid #c9d8d1; width: 55px; }
 
-        .resultado-box { 
-            margin-top: 25px; 
-            padding: 20px; 
-            border-radius: 10px; 
-            text-align: center; 
-            display: none; 
-        }
+        .resultado-box { margin-top: 20px; padding: 20px; border-radius: 10px; text-align: center; display: none; page-break-inside: avoid; }
+        .btn-container { display: flex; gap: 10px; justify-content: center; padding: 20px; background: var(--bg); }
+        button { padding: 12px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; text-transform: uppercase; }
+        .btn-calc { background: var(--secondary); color: white; }
+        .btn-pdf { background: #34495e; color: white; }
 
-        .btn-container { 
-            display: flex; 
-            gap: 15px; 
-            justify-content: center; 
-            margin-top: 25px; 
-            padding-bottom: 20px;
-        }
-        
-        button { 
-            padding: 15px 25px; 
-            border: none; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            text-transform: uppercase; 
-            transition: 0.3s; 
-        }
-
-        .btn-calc { background-color: var(--secondary); color: white; }
-        .btn-pdf { background-color: #34495e; color: white; }
-        button:hover { opacity: 0.9; transform: translateY(-1px); }
-
-        /* Ajustes para o PDF não gerar folha em branco */
         @media print {
+            #app-content { width: 100% !important; position: absolute; top: 0; }
             .no-print { display: none !important; }
-            .container { box-shadow: none; margin: 0; width: 100%; }
+            .container { box-shadow: none !important; padding: 10px 20px !important; }
         }
     </style>
 </head>
 <body>
 
 <div id="app-content">
-    <div class="header-gradient" id="header">
-        <div class="therapist-name">Terapeuta: José Alves Barbosa</div>
+    <div class="header-gradient">
+        <div class="therapist-name">José Alves Barbosa</div>
         <div class="methodology-title">Metodologia RSI</div>
-        <div class="assessment-subtitle">Monitoramento de Mapeamento de Cargas (MMC)</div>
+        <div style="font-size: 0.9em; opacity: 0.8;">Mapeamento de Carga Alostática e Terreno Biológico</div>
     </div>
 
-    <div class="container" id="conteudo-principal">
+    <div class="container">
         <div class="info-paciente">
             <input type="text" id="nome" placeholder="Nome do Interagente">
             <input type="date" id="data">
         </div>
 
-        <div class="scales-info">
-            <strong>Escala:</strong> 0: Ausente | 1: Leve | 2: Moderado | 3: Intenso | 4: Crítico
-        </div>
+        <div class="scales-info"><strong>Referência:</strong> 0 (Ausente) a 4 (Crítico)</div>
 
         <div class="pilar">
             <h3>Dimensão A: Carga Orgânica</h3>
-            <div class="pergunta"><span>Marcador Gastresofágico (Azia, disbiose, má digestão)</span>
-                <select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
-            </div>
-            <div class="pergunta"><span>Marcador de Toxicidade (Dores de cabeça, cansaço, língua branca)</span>
-                <select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
-            </div>
-            <div class="pergunta"><span>Marcador Inflamatório (Dores articulares, retenção de líquidos)</span>
-                <select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
-            </div>
+            <div class="pergunta"><span>Marcador Gastresofágico (Azia, disbiose, distensão)</span><select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
+            <div class="pergunta"><span>Marcador de Toxicidade (Dores de cabeça, cansaço, língua branca)</span><select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
+            <div class="pergunta"><span>Marcador Inflamatório (Dores articulares, retenção hídrica)</span><select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
         </div>
 
         <div class="pilar">
             <h3>Dimensão B: Carga Neural</h3>
-            <div class="pergunta"><span>Hipervigilância (Sustos, irritabilidade, falta de foco)</span>
-                <select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
-            </div>
-            <div class="pergunta"><span>Rigidez Somática (Tensão no pescoço, bruxismo, mandíbula)</span>
-                <select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
-            </div>
-            <div class="pergunta"><span>Latência de Recuperação (Demora para relaxar após estresse)</span>
-                <select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
-            </div>
+            <div class="pergunta"><span>Hipervigilância (Sustos, falta de foco, irritabilidade sonora)</span><select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
+            <div class="pergunta"><span>Rigidez Somática (Tensão trapézio/mandíbula, bruxismo)</span><select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
+            <div class="pergunta"><span>Latência de Recuperação (Demora para relaxar pós-estresse)</span><select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
         </div>
 
         <div class="pilar">
-            <h3>Dimensão C: Carga Psicotraumática</h3>
-            <div class="pergunta"><span>Flashbacks Somáticos (Reação física ao lembrar do passado)</span>
-                <select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
-            </div>
-            <div class="pergunta"><span>Congelamento Emocional (Sentir-se travado ou anestesiado)</span>
-                <select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
-            </div>
-            <div class="pergunta"><span>Recorrência de Padrão (Repetição de ciclos de dor)</span>
-                <select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
-            </div>
+            <h3>Dimensão C: Carga Psicosomática</h3>
+            <div class="pergunta"><span>Memória Somática (Reação física ao lembrar de eventos)</span><select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
+            <div class="pergunta"><span>Anestesia Emocional (Sentir-se "travado" ou indiferente)</span><select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
+            <div class="pergunta"><span>Ciclo de Recorrência (Repetição de padrões de resposta)</span><select class="score"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></div>
         </div>
 
         <div id="resultado" class="resultado-box">
-            <h3 style="margin:0">Saturação: <span id="pontos-total">0</span> pontos</h3>
-            <h4 id="status-txt" style="margin:10px 0"></h4>
-            <p id="orientacao-txt" style="margin:0; font-size: 0.95em;"></p>
+            <h3 style="margin:0">Saturação Sistêmica: <span id="pontos-total">0</span> pontos</h3>
+            <h4 id="status-txt" style="margin:10px 0; text-transform: uppercase;"></h4>
+            <p id="orientacao-txt" style="margin:0; line-height: 1.4; font-weight: 500;"></p>
         </div>
     </div>
 </div>
 
 <div class="btn-container no-print">
-    <button class="btn-calc" onclick="calcular()">Analisar Saturação</button>
-    <button class="btn-pdf" onclick="gerarPDF()">Gerar PDF</button>
+    <button class="btn-calc" onclick="calcular()">Analisar Terreno</button>
+    <button class="btn-pdf" onclick="gerarPDF()">Salvar Relatório</button>
 </div>
 
 <script>
     function calcular() {
-        let scores = document.querySelectorAll('.score');
         let total = 0;
-        scores.forEach(s => total += parseInt(s.value));
+        document.querySelectorAll('.score').forEach(s => total += parseInt(s.value));
         document.getElementById('pontos-total').innerText = total;
         
         let status = "", orientacao = "", cor = "", bg = "";
 
         if(total <= 12) {
-            status = "Equilíbrio Dinâmico";
-            orientacao = "Organismo favorável ao reprocessamento direto.";
+            status = "Nível 1: Equilíbrio Sistêmico";
+            orientacao = "ALERTA DE MANUTENÇÃO: Seu terreno biológico está estável. Para preservar este estado, mantenha atenção rigorosa à hidratação, alimentação limpa e exercícios leves porém frequentes. O equilíbrio requer vigilância constante.";
             cor = "#27ae60"; bg = "#eafdf3";
         } else if(total <= 24) {
-            status = "Saturação Latente";
-            orientacao = "Sugere-se hidratação e ajustes leves no terreno biológico.";
+            status = "Nível 2: Saturação Latente";
+            orientacao = "ALERTA DE REPARAÇÃO: Seu organismo apresenta sinais de acúmulo tóxico. Siga rigorosamente as recomendações de desinflamação do seu terapeuta para que sua saúde sistêmica seja restaurada antes que o quadro evolua.";
             cor = "#f39c12"; bg = "#fef9e7";
         } else if(total <= 36) {
-            status = "Sobrecarga Crítica";
-            orientacao = "Corpo inflamado. O reprocessamento TRG exige suporte orgânico.";
+            status = "Nível 3: Sobrecarga Crítica";
+            orientacao = "ALERTA SÉRIO: Alto índice de inflamação detectado. Seu corpo está operando sob estresse biológico severo, o que drena sua capacidade de recuperação. É urgente priorizar a limpeza orgânica e seguir o protocolo clínico estabelecido.";
             cor = "#e67e22"; bg = "#fdf2e9";
         } else {
-            status = "Colapso Sistêmico";
-            orientacao = "Prioridade: Limpeza biológica para permitir a eficácia da terapia.";
+            status = "Nível 4: Colapso Biológico";
+            orientacao = "ALERTA DE EMERGÊNCIA: Saturação máxima do terreno biológico. O sistema está incapacitado de processar novas cargas. Intervenção imediata na desintoxicação e repouso metabólico são cruciais.";
             cor = "#c0392b"; bg = "#fdeaea";
         }
 
@@ -253,18 +149,15 @@
 
     function gerarPDF() {
         const elemento = document.getElementById('app-content');
-        const nome = document.getElementById('nome').value || 'Interagente';
-        
+        const nome = (document.getElementById('nome').value || 'Interagente').replace(/\s+/g, '_');
         const opt = {
-            margin: [5, 5, 5, 5],
+            margin: 0,
             filename: `RSI_${nome}.pdf`,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true },
+            image: { type: 'jpeg', quality: 1 },
+            html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-            pagebreak: { mode: 'avoid-all' }
+            pagebreak: { mode: ['avoid-all'] }
         };
-
-        // Garante que o resultado apareça no PDF se já tiver sido calculado
         html2pdf().set(opt).from(elemento).save();
     }
 </script>
